@@ -10,7 +10,8 @@ public enum PermType {
      * Read document.
      */
     READ,
-    
+
+    VIEW,
     /**
      * Write document.
      */
