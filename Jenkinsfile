@@ -23,15 +23,9 @@ DOCKER_TAG = "${env.BUILD_NUMBER}" // use build number as tag
  }
  }
 
- stages {
- stage('Test Credentials') {
- steps {
- script {
- echo "DOCKER_HUB_CREDENTIALS: ${DOCKER_HUB_CREDENTIALS}"
- }
- }
- }
- }
+ 
+
+ 
 
  // Building Docker images
  stage('Building image') {
@@ -39,6 +33,15 @@ DOCKER_TAG = "${env.BUILD_NUMBER}" // use build number as tag
  script {
  // assume Dockerfile locate at root
  docker.build("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}")
+ }
+ }
+ }
+
+
+ stage('Test Credentials') {
+ steps {
+ script {
+ echo "DOCKER_HUB_CREDENTIALS: ${DOCKER_HUB_CREDENTIALS}"
  }
  }
  }
