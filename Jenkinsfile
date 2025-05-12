@@ -6,8 +6,8 @@ pipeline {
 // Jenkins credentials configuration
  DOCKER_HUB_CREDENTIALS = credentials('dockerhub_credentials') // Docker Hub credentials ID store in Jenkins
  // Docker Hub Repository's name
-DOCKER_IMAGE = 'lihaidehaoren/teedy-app' // your Docker Hub user name andRepository's name
- DOCKER_TAG = "${env.BUILD_NUMBER}" // use build number as tag
+DOCKER_IMAGE = 'lihaidehaoren/teedy-app' // your Docker Hub user name and Repository's name
+DOCKER_TAG = "${env.BUILD_NUMBER}" // use build number as tag
  }
 
  stages {
@@ -20,6 +20,16 @@ DOCKER_IMAGE = 'lihaidehaoren/teedy-app' // your Docker Hub user name andReposit
 // your github Repository
  )
  sh 'mvn -B -DskipTests clean package'
+ }
+ }
+
+ stages {
+ stage('Test Credentials') {
+ steps {
+ script {
+ echo "DOCKER_HUB_CREDENTIALS: ${DOCKER_HUB_CREDENTIALS}"
+ }
+ }
  }
  }
 
@@ -38,8 +48,7 @@ DOCKER_IMAGE = 'lihaidehaoren/teedy-app' // your Docker Hub user name andReposit
  steps {
  script {
  // sign in Docker Hub
- docker.withRegistry('https://registry.hub.docker.com',
-'DOCKER_HUB_CREDENTIALS') {
+ docker.withRegistry('https://registry.hub.docker.com','DOCKER_HUB_CREDENTIALS') {
  // push image
 docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
 
