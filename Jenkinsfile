@@ -38,22 +38,13 @@ DOCKER_TAG = "${env.BUILD_NUMBER}" // use build number as tag
  }
 
 
-stage('Test Credentials') {
-            steps {
-                script {
-                    // 输出凭据用户名，确认凭据是否正确加载
-                    echo "DOCKER_HUB_CREDENTIALS USERNAME: ${DOCKER_HUB_CREDENTIALS_USR}"
-                    echo "DOCKER_HUB_CREDENTIALS PASSWORD: ${DOCKER_HUB_CREDENTIALS_PSW}"
-                }
-            }
-        }
 
  // Uploading Docker images into Docker Hub
  stage('Upload image') {
  steps {
  script {
  // sign in Docker Hub
- docker.withRegistry('https://registry.hub.docker.com','DOCKER_HUB_CREDENTIALS') {
+ docker.withRegistry('https://registry.hub.docker.com','dockerhub_credentials') {
  // push image
 docker.image("${env.DOCKER_IMAGE}:${env.DOCKER_TAG}").push()
 
